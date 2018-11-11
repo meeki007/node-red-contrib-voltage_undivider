@@ -30,7 +30,7 @@ Install with node-red Palette Manager or,
 Run the following command in your Node-RED user directory - typically `~/.node-red`:
 
 ```
-npm install node-red-voltage_undivider
+npm install node-red-contrib-voltage_undivider
 ```
 
 
@@ -40,6 +40,8 @@ A Node to un-divide a voltage that was divided prior to taking a reading to prot
 Just insert the node in between two others. Then the voltage received can be corrected, undivided, to show voltage before the physical voltage devider.
 
 Be sure to send the voltage as msg.payload. After the voltage_undivider does its work the output will also be sent via msg.payload
+
+![examplenode.png](./doc/examplenode.png)
 
 
 ### Voltage_In
@@ -76,7 +78,7 @@ Simple examples showing how to use the voltage_undivider.
 ![example1.png](./doc/example1.png)
 
 ```JSON
-[{"id":"b0b8b22c.dd0f6","type":"inject","z":"99d92ba1.9f3598","name":"","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":140,"y":160,"wires":[["2dbeb200.2d534e"]]},{"id":"d9a532a2.d8d81","type":"debug","z":"99d92ba1.9f3598","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":470,"y":160,"wires":[]},{"id":"2dbeb200.2d534e","type":"timeframerlt","z":"99d92ba1.9f3598","name":"","throttleType":"count","timeLimit":"2","timeLimitType":"seconds","countLimit":"4","byresetcountLimit":"4","x":310,"y":160,"wires":[["d9a532a2.d8d81"]]}]
+[{"id":"6c3f0ba9.131de4","type":"change","z":"7edb64d7.2216cc","name":"Anolog Digital Converter","rules":[{"t":"set","p":"payload","pt":"msg","to":"3.25","tot":"str"}],"action":"","property":"","from":"","to":"","reg":false,"x":310,"y":320,"wires":[["5ad1bd27.e1b3b4"]]},{"id":"c0a340e7.a8288","type":"debug","z":"7edb64d7.2216cc","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","x":710,"y":320,"wires":[]},{"id":"1782d03a.4e4ae","type":"inject","z":"7edb64d7.2216cc","name":"","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":120,"y":320,"wires":[["6c3f0ba9.131de4"]]},{"id":"5ad1bd27.e1b3b4","type":"voltage_undivider","z":"7edb64d7.2216cc","name":"","Voltage_Input":"V-Volts","Resistor_1":"1.1","Resistor_1Types":"Ω-Ohm","Resistor_2":"2.1","Resistor_2Types":"Ω-Ohm","Voltage_Output":"V-Volts","Round_Output":"Thousandths","x":530,"y":320,"wires":[["c0a340e7.a8288"]]}]
 ```
 
 ## Bugs / Feature request
@@ -101,6 +103,15 @@ Thanks to [SunValleyFoods](https://www.sunvalleyfoods.com/) for being a buisness
 
 ## release notes ##
 0.0.0 = (majorchange) . (new_feature) . (bugfix-simple_mod)
+
+version 0.7.8
+updated help txt
+updated images
+updated example code
+
+version 0.7.7
+fixed install command
+
 
 version 0.7.6
 First Public release

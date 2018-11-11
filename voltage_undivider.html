@@ -57,17 +57,17 @@
 </script>
 
 <script type="text/x-red" data-help-name="voltage_undivider">
-    <p>A Trigger and Rate Limit Node to pass messages if user count has been met within a defined user time frame.</p>
-    <p>Just insert the node in between two others. Then the ammount of messages received in a certain time frame to trigger can be limited by different parameter selections.</p>
-    <p><strong>Timeframe:</strong><br/>
-    Amount of time given before message trigger event is reset.
-    For example: setting the node to <code>10 seconds</code> means, that you have ten seconds to reach enough messages to trigger one message to be forwarded.</p>
-    <p><strong>Count Persistent:</strong><br/>
-    Ammount of messages needed to trigger before one message is passed through. Persistent, If triggered the count is reset and it can be triggered again.
-    For example: setting the node to a count of <code>5</code> means, that five messages are needed within the specified timeframe before one message will be forwarded.</p>
-    <p><strong>Count Terminable:</strong><br/>
-    Will only pass through a single message, ONCE! Hence Terminable. When the ammount of messages needed active the trigger is reached. The trigger can be reset to send message when conditions are met again with <code>msg.reset</code>.
-    For example: setting the node to a count of <code>5</code> means, that five messages are needed within the specified timeframe before one message will be forwarded Once, One time, and never again, even if conditions are met again.</p>
+    <p>A Node to un-divide a voltage that was divided prior to taking a reading to protect a input when reading its value.</p>
+    <p>Just insert the node in between two others. Then the voltage received can be corrected, undivided, to show voltage before the physical voltage devider.</p>
+    <p>Be sure to send the voltage as msg.payload. After the voltage_undivider does its work the output will also be sent via msg.payload.</p>
+    <p><strong>Voltage_In:</strong><br/>
+    Select the voltage scale for the Input. Voltages from diffrent sources may be represented in diffrent scales. Example; a ADC (Anolog to Digital Converter may output in mV. You must select the correct input voltage scale or your output will be wrong.</p>
+    <p><strong>Resistor:</strong><br/>
+    Select the resistor scale for the resistor used. Then enter the resistance.</p>
+    <p><strong>Voltage_Out:</strong><br/>
+    Select the voltage scale you want for the Output. If you have selected the correct scale on the input the output scale you have selected will be automaticly converted to the voltage you want.</p>
+    <p><strong>Round_Output:</strong><br/>
+    If you would like your output to be rounded then select the level you want. Note: if you choose not to round the maximum integer length is 15 digits. The maximum length after a decimals is 17 digits. </p>
 </script>
 
 <script type="text/javascript">
