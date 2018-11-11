@@ -1,0 +1,136 @@
+<script type="text/x-red" data-template-name="voltage_undivider">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-Voltage_Input"><i class="fa fa-sign-in"></i> Voltage_In</label>
+        <select id="node-input-Voltage_Input" style="width: 70%">
+            <option value="µV-microvolts">µV-microvolts</option>
+            <option value="mV-millivolts">mV-millivolts</option>
+            <option value="V-Volts">V-Volts</option>
+            <option value="kV-kilovolts">kV-kilovolts</option>
+            <option value="MV-megavolts">MV-megavolts</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-Resistor_1"><i class="fa fa-krw"></i> Resistor_1</label>
+        <input type="text" id="node-input-Resistor_1" placeholder="0" style="padding-left: 5px; width: 70%">
+        <input type="hidden" id="node-input-Resistor_1Types">
+    </div>
+    <div class="form-row">
+        <label for="node-input-Resistor_2"><i class="fa fa-krw"></i> Resistor_2</label>
+        <input type="text" id="node-input-Resistor_2" placeholder="0" style="padding-left: 5px; width: 70%">
+        <input type="hidden" id="node-input-Resistor_2Types">
+    </div>
+
+<br>
+<br>
+
+    </div>
+    <div class="form-row">
+        <label for="node-input-Voltage_Output"><i class="fa fa-sign-out"></i> Voltage_Out</label>
+        <select id="node-input-Voltage_Output" style="width: 70%">
+            <option value="µV-microvolts">µV-microvolts</option>
+            <option value="mV-millivolts">mV-millivolts</option>
+            <option value="V-Volts">V-Volts</option>
+            <option value="kV-kilovolts">kV-kilovolts</option>
+            <option value="MV-megavolts">MV-megavolts</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-Round_Output"><i class=""></i>≈ Round_Output</label>
+        <select id="node-input-Round_Output" style="width: 70%">
+            <option value="Do_Not_Round">Do Not Round</option>
+            <option value="Ones">1 - Ones</option>
+            <option value="Tenths">1.0 - Tenths</option>
+            <option value="Hundredths">1.00 - Hundredths</option>
+            <option value="Thousandths">1.000 - Thousandths</option>
+            <option value="TenThousandths">1.0000 - Ten Thousandths</option>
+            <option value="HundredThousandths">1.00000 - Hundred Thousandths</option>
+            <option value="Millionths">1.000000 - Millionths</option>
+        </select>
+    </div>
+
+
+
+</script>
+
+<script type="text/x-red" data-help-name="voltage_undivider">
+    <p>A Trigger and Rate Limit Node to pass messages if user count has been met within a defined user time frame.</p>
+    <p>Just insert the node in between two others. Then the ammount of messages received in a certain time frame to trigger can be limited by different parameter selections.</p>
+    <p><strong>Timeframe:</strong><br/>
+    Amount of time given before message trigger event is reset.
+    For example: setting the node to <code>10 seconds</code> means, that you have ten seconds to reach enough messages to trigger one message to be forwarded.</p>
+    <p><strong>Count Persistent:</strong><br/>
+    Ammount of messages needed to trigger before one message is passed through. Persistent, If triggered the count is reset and it can be triggered again.
+    For example: setting the node to a count of <code>5</code> means, that five messages are needed within the specified timeframe before one message will be forwarded.</p>
+    <p><strong>Count Terminable:</strong><br/>
+    Will only pass through a single message, ONCE! Hence Terminable. When the ammount of messages needed active the trigger is reached. The trigger can be reset to send message when conditions are met again with <code>msg.reset</code>.
+    For example: setting the node to a count of <code>5</code> means, that five messages are needed within the specified timeframe before one message will be forwarded Once, One time, and never again, even if conditions are met again.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType("voltage_undivider", {
+        category: "function",
+        defaults: {
+            name: {value:""},
+            Voltage_Input: {value:"V-Volts"},
+            Resistor_1: {value:1,validate:RED.validators.number()},
+            Resistor_1Types: {value:"Ω-Ohm"},
+            Resistor_2: {value:1,validate:RED.validators.number()},
+            Resistor_2Types: {value:"Ω-Ohm"},
+            Voltage_Output: {value:"V-Volts"},
+            Round_Output: {value:"Do_Not_Round"},
+
+
+        },
+        color:"#FFCC66",
+        inputs: 1,
+        outputs: 1,
+        icon: "voltage_undivider.png",
+        label: function() {
+            return this.name || "voltage_undivider";
+        },
+        labelStyle: function() {
+            return this.name ? "node_label_italic" : "";
+        },
+        oneditprepare: function() {
+            // defaults
+            this.Voltage_Input = !this.Voltage_Input ? "V-Volts" : this.Voltage_Input;
+            this.Resistor_1 = !this.Resistor_1 ? 1 : this.Resistor_1;
+            this.Resistor_1Types = !this.Resistor_1Types ? "Ω-Ohm" : this.Resistor_1Types;
+            this.Resistor_2 = !this.Resistor_2 ? 1 : this.Resistor_2;
+            this.Resistor_2Types = !this.Resistor_2Types ? "Ω-Ohm" : this.Resistor_2Types;
+            this.Voltage_Output = !this.Voltage_Output ? "V-Volts" : this.Voltage_Output;
+            this.Round_Output = !this.Round_Output ? "Do_Not_Round" : this.Round_Output;
+
+            // change listener for type select
+
+            // typed input for Resistor_1
+            $("#node-input-Resistor_1").typedInput({
+                default: "Ω-Ohm",
+                typeField: $("#node-input-Resistor_1Types"),
+                types: [
+                    {value: "µΩ-Microohm", label: "µΩ-Microohm", hasValue: true},
+                    {value: "mΩ-Milliohm", label: "mΩ-Milliohm", hasValue: true},
+                    {value: "Ω-Ohm", label: "Ω-Ohm", hasValue: true},
+                    {value: "kΩ-Kiloohm", label: "kΩ-Kiloohm", hasValue: true},
+                    {value: "MΩ-Megaohm", label: "MΩ-Megaohm", hasValue: true}
+                ]
+            });
+            // typed input for Resistor_2
+            $("#node-input-Resistor_2").typedInput({
+                default: "Ω-Ohm",
+                typeField: $("#node-input-Resistor_2Types"),
+                types: [
+                    {value: "µΩ-Microohm", label: "µΩ-Microohm", hasValue: true},
+                    {value: "mΩ-Milliohm", label: "mΩ-Milliohm", hasValue: true},
+                    {value: "Ω-Ohm", label: "Ω-Ohm", hasValue: true},
+                    {value: "kΩ-Kiloohm", label: "kΩ-Kiloohm", hasValue: true},
+                    {value: "MΩ-Megaohm", label: "MΩ-Megaohm", hasValue: true}
+                ]
+            });
+        }
+    });
+</script>
