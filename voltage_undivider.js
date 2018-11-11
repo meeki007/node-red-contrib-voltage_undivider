@@ -12,6 +12,7 @@ module.exports = function(RED)
     var node = this;
 
     // config
+    this.property = config.property||"payload";
     this.Voltage_Input = config.Voltage_Input || "V-Volts";
     this.Resistor_1Types = config.Resistor_1Types || "Ω-Ohm";
     this.Resistor_1 = Number(config.Resistor_1 || 1);
@@ -25,14 +26,19 @@ module.exports = function(RED)
 
     this.on("input", function(msg)
     {
-
-
-
       //clear status icon
       node.status({});
 
+      // if property of msg.* is not filled then set to msg.payload
+      if (this.property == undefined)
+      {
+        return this.error("msg property was not set. Please set msg propery to a non null value", msg);
+      }
+
+      //get the voltage value the user chose to pass with msg.*
       //get imput voltage
-      var voltage_in = msg.payload;
+      var voltage_in = RED.util.getMessageProperty(msg,node.property);
+
 
       //Make sure msg.payload is a number!!
       if( isNaN(voltage_in) || !isFinite(voltage_in) )
@@ -44,6 +50,8 @@ module.exports = function(RED)
       //If its still not a number
       if( isNaN(voltage_in) || !isFinite(voltage_in) )
       {
+        //send all msg along even if it faild a check
+        RED.util.setMessageProperty(msg,node.property,voltage_in);
         node.send(msg);
         return this.error("Voltage into this node as msg.payload is not numeric! Please only send it numbers", msg);
       }
@@ -257,8 +265,8 @@ module.exports = function(RED)
         // end status msg after 3 seconds
         var timmerClear = setTimeout(status_clear, 5000);
 
-        //set msg payload
-        msg.payload = round;
+        //set msg.* out
+        RED.util.setMessageProperty(msg,node.property,round);
         //send the payload
         node.send(msg);
 

@@ -9,6 +9,7 @@ node-red-contrib-voltage_undivider
 ## Table of Contents
 * [Install](#install)
 * [Usage](#usage)
+  * [Property](#Property)
   * [Voltage_In](#Voltage_In)
   * [Resistor_1](#Resistor_1)
   * [Resistor_2](#Resistor_2)
@@ -39,10 +40,14 @@ npm install node-red-contrib-voltage_undivider
 A Node to un-divide a voltage that was divided prior to taking a reading to protect a input when reading its value.
 Just insert the node in between two others. Then the voltage received can be corrected, undivided, to show voltage before the physical voltage devider.
 
-Be sure to send the voltage as msg.payload. After the voltage_undivider does its work the output will also be sent via msg.payload
 
 ![examplenode.png](./doc/examplenode.png)
 
+
+### Property
+
+Define the msg property name you wish. The name you select (msg.example) will also be the output property</p>
+The payload must be a number! Anything else will try to be parsed into a number and rejected if that fails.
 
 ### Voltage_In
 
@@ -103,6 +108,11 @@ Thanks to [SunValleyFoods](https://www.sunvalleyfoods.com/) for being a buisness
 
 ## release notes ##
 0.0.0 = (majorchange) . (new_feature) . (bugfix-simple_mod)
+
+
+version 0.8.9
+Property option added to node
+bug fix for checks if null value
 
 version 0.7.8
 updated help txt

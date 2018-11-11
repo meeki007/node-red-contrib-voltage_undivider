@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-voltage_undivider",
-  "version": "0.7.8",
+  "version": "0.8.9",
   "description": "A Node to un-divide a voltage that was divided prior to taking a reading to protect a input when reading its value.",
   "homepage": "http://github.com/meeki007/node-red-contrib-voltage_undivider",
   "bugs": {
